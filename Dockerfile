@@ -38,4 +38,5 @@ RUN sudo chown -R $USER:$USER .
 
 RUN ./setup.sh
 
-ENTRYPOINT for ser in nginx rsyslog supervisor ; do sudo service $ser start ; done; sh
+ENTRYPOINT ["./docker_entry.sh"]
+CMD sudo tail -f /var/log/app/all.log

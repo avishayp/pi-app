@@ -42,12 +42,6 @@ first_time_setup() {
     sudo pip3 install -r server/requirements.txt
 }
 
-make_dirs() {
-    sudo mkdir -p /var/run/wsgi
-    sudo mkdir -p /var/log/app
-    sudo chown root:adm /var/log/app
-}
-
 update() {
     echo "updating ap params"
     sed -i "s/ssid=.*/ssid=${SSID_NAME}/g; s/wpa_passphrase=.*/wpa_passphrase=${SSID_PASS}/g" fakeroot/etc/hostapd/hostapd.conf
@@ -62,4 +56,4 @@ update() {
 SSID_NAME=${1-"raspberry-app"}
 SSID_PASS=${2-"raspberry-app"}
 
-first_time_setup && make_dirs && update
+first_time_setup && update
