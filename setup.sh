@@ -2,6 +2,8 @@
 
 # app skeleton for raspberry pi
 # usage:
+# wget https://raw.githubusercontent.com/avishayp/pi-app/master/setup.sh
+# chmod +x setup.sh
 # ./setup.sh ssid_name ssid_pass
 #
 # default values are all raspberry-app (security at user's risk)
@@ -9,7 +11,17 @@
 # run from reporoot/
 pushd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+get_source() {
+    which git || sudo apt-get install -y git
+    SOURCEDIR="$(mktemp -d)"
+    git clone https://github.com/avishayp/pi-app ${SOURCEDIR}
+    cp -R ${SOURCEDIR}/fakeroot ./
+    cp -R ${SOURCEDIR}/server ./
+    rm -fR ${SOURCEDIR}
+}
+
 first_time_setup() {
+
     sudo apt-get update
 
     sudo apt-get install -y \
@@ -21,6 +33,11 @@ first_time_setup() {
         python3-pip \
         rsyslog \
         supervisor
+
+    if [ ! -d server ] ; then
+        echo "get files first"
+        get_source
+    fi
 
     sudo pip3 install -r server/requirements.txt
 }
